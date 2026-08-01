@@ -1,0 +1,309 @@
+{
+	"name": "daily_weather_update",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"description": "Copies CME data from the rest API, unrolls it, then saves it to the database's rawCME table",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Get Secrets",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 3,
+					"retryIntervalInSeconds": 300,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['activityID']"
+								},
+								"sink": {
+									"name": "activityID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['catalog']"
+								},
+								"sink": {
+									"name": "catalog",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['startTime']"
+								},
+								"sink": {
+									"name": "eventStartTime",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['sourceLocation']"
+								},
+								"sink": {
+									"name": "sourceLocation",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['activeRegionNum']"
+								},
+								"sink": {
+									"name": "activeRegionNum",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['note']"
+								},
+								"sink": {
+									"name": "eventNote",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['submissionTime']"
+								},
+								"sink": {
+									"name": "eventSubmissionTime",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['versionId']"
+								},
+								"sink": {
+									"name": "versionId",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['link']"
+								},
+								"sink": {
+									"name": "eventLink",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['isMostAccurate']"
+								},
+								"sink": {
+									"name": "isMostAccurate",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "['time21_5']"
+								},
+								"sink": {
+									"name": "time21_5",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "['latitude']"
+								},
+								"sink": {
+									"name": "latitude",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "['longitude']"
+								},
+								"sink": {
+									"name": "longitude",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "['halfAngle']"
+								},
+								"sink": {
+									"name": "halfAngle",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "['speed']"
+								},
+								"sink": {
+									"name": "speed",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "['type']"
+								},
+								"sink": {
+									"name": "type",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['note']"
+								},
+								"sink": {
+									"name": "analysisNote",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['levelOfData']"
+								},
+								"sink": {
+									"name": "levelOfData",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "['submissionTime']"
+								},
+								"sink": {
+									"name": "analysisSubmissionTime",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "['link']"
+								},
+								"sink": {
+									"name": "analysisLink",
+									"type": "String"
+								}
+							}
+						],
+						"collectionReference": "$['cmeAnalyses']"
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "RestResource1",
+						"type": "DatasetReference",
+						"parameters": {
+							"startDate": {
+								"value": "@formatDateTime(addDays(utcNow(),-1), 'yyyy-MM-dd')",
+								"type": "Expression"
+							},
+							"endDate": {
+								"value": "@formatDateTime(utcNow(), 'yyyy-MM-dd')",
+								"type": "Expression"
+							},
+							"apiKey": {
+								"value": "@activity('Get Secrets').output.value",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "stg_CME_Raw",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[normalize_CME_data]"
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Get Secrets",
+				"description": "Gets the API keys from the key vault",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": true,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": "https://space-weather-keys2.vault.azure.net/secrets/NASA-DONKI?api-version=7.0",
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2026-07-30T19:13:09Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

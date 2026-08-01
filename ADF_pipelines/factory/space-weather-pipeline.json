@@ -1,0 +1,15 @@
+{
+	"name": "space-weather-pipeline",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "centralus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "b591a825-6537-4f10-aeea-aa65e02832ee",
+		"tenantId": "1fe775ff-afda-47a3-9b57-f200e919ecd8"
+	}
+}

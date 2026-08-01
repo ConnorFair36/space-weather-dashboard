@@ -1,0 +1,11 @@
+{
+	"name": "API_KeyVault",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://Space-Weather-Keys2.vault.azure.net/"
+		}
+	}
+}

@@ -1,0 +1,25 @@
+{
+	"name": "Daily_Update",
+	"properties": {
+		"description": "Triggers the pipeline everyday to pull in new data from the API's",
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "daily_weather_update",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2026-07-27T06:00:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}

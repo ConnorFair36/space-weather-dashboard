@@ -1,0 +1,30 @@
+{
+	"name": "RestResource1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RestService1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"startDate": {
+				"type": "string"
+			},
+			"endDate": {
+				"type": "string"
+			},
+			"apiKey": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "DONKI/WS/get/CME?startDate=@{dataset().startDate}&endDate=@{dataset().endDate}&api_key=@{dataset().apiKey}",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

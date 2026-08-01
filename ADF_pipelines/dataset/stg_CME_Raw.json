@@ -1,0 +1,109 @@
+{
+	"name": "stg_CME_Raw",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "activityID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "catalog",
+				"type": "nvarchar"
+			},
+			{
+				"name": "eventStartTime",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "sourceLocation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "activeRegionNum",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "eventNote",
+				"type": "nvarchar"
+			},
+			{
+				"name": "eventSubmissionTime",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "versionId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "eventLink",
+				"type": "nvarchar"
+			},
+			{
+				"name": "isMostAccurate",
+				"type": "bit"
+			},
+			{
+				"name": "time21_5",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "latitude",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "longitude",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "halfAngle",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "speed",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "analysisNote",
+				"type": "nvarchar"
+			},
+			{
+				"name": "levelOfData",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "analysisSubmissionTime",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "analysisLink",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "stg_CME_Raw"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
