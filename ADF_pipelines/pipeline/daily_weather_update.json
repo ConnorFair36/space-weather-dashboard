@@ -248,7 +248,13 @@
 				"outputs": [
 					{
 						"referenceName": "stg_CME_Raw",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"DB_Name": {
+								"value": "@pipeline().parameters.DB_Name",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			},
@@ -276,7 +282,10 @@
 				},
 				"linkedServiceName": {
 					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"DB_Name": "@pipeline().parameters.DB_Name"
+					}
 				}
 			},
 			{
@@ -302,6 +311,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"DB_Name": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"lastPublishTime": "2026-07-30T19:13:09Z"
 	},
