@@ -1,3 +1,4 @@
+
 SELECT *
 FROM CME_Analysis;
 
@@ -6,6 +7,16 @@ FROM CME_Events;
 
 SELECT *
 FROM stg_CME_Raw;
+
+/*
+SELECT *
+FROM CME_Events
+INNER JOIN CME_Analysis ON CME_Events.activityID = CME_Analysis.activityID
+WHERE
+    CME_Events.sourceLocation != '' AND
+    CME_Analysis.longitude IS NOT NULL AND
+    CME_Analysis.isMostAccurate = 1;
+*/
 
 /*
 SELECT t1.*
